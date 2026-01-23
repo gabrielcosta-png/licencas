@@ -20,8 +20,15 @@ export default function Dashboard() {
       title="Dashboard"
       subtitle="Visão geral do sistema de gestão ambiental"
     >
-      {/* Metrics Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      {/* Section Title */}
+      <div className="mb-6">
+        <h2 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground/70">
+          Licenças Ambientais
+        </h2>
+      </div>
+      
+      {/* Metrics Grid - Licenses */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 mb-10">
         <MetricCard
           title="Total de Licenças"
           value={mockMetrics.totalLicenses}
@@ -49,8 +56,15 @@ export default function Dashboard() {
         />
       </div>
 
+      {/* Section Title */}
+      <div className="mb-6">
+        <h2 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground/70">
+          Condicionantes
+        </h2>
+      </div>
+
       {/* Conditionants Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 mb-10">
         <MetricCard
           title="Total Condicionantes"
           value={mockMetrics.totalConditionants}
@@ -80,7 +94,7 @@ export default function Dashboard() {
       </div>
 
       {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <LicenseStatusChart />
         <ConditionantProgressChart />
       </div>
