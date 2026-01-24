@@ -1,39 +1,48 @@
 import { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
-import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { TrendingUp, TrendingDown } from 'lucide-react';
 
 interface MetricCardProps {
   title: string;
-  value: string | number;
+  value: number | string;
   icon: ReactNode;
   trend?: {
     value: number;
     label: string;
   };
-  variant?: 'default' | 'success' | 'warning' | 'danger';
-  className?: string;
+  variant?: 'default' | 'success' | 'warning' | 'danger' | 'info';
 }
 
 const variantStyles = {
   default: {
-    icon: 'bg-primary/8 text-primary',
-    iconRing: 'ring-primary/10',
-    trend: 'text-muted-foreground',
+    iconBg: 'bg-blue-100',
+    iconColor: 'text-blue-600',
+    trendUp: 'text-emerald-600',
+    trendDown: 'text-red-500',
   },
   success: {
-    icon: 'bg-success/8 text-success',
-    iconRing: 'ring-success/10',
-    trend: 'text-success',
+    iconBg: 'bg-emerald-100',
+    iconColor: 'text-emerald-600',
+    trendUp: 'text-emerald-600',
+    trendDown: 'text-red-500',
   },
   warning: {
-    icon: 'bg-warning/10 text-warning-foreground',
-    iconRing: 'ring-warning/10',
-    trend: 'text-warning-foreground',
+    iconBg: 'bg-amber-100',
+    iconColor: 'text-amber-600',
+    trendUp: 'text-amber-600',
+    trendDown: 'text-amber-600',
   },
   danger: {
-    icon: 'bg-destructive/8 text-destructive',
-    iconRing: 'ring-destructive/10',
-    trend: 'text-destructive',
+    iconBg: 'bg-red-100',
+    iconColor: 'text-red-600',
+    trendUp: 'text-emerald-600',
+    trendDown: 'text-red-500',
+  },
+  info: {
+    iconBg: 'bg-violet-100',
+    iconColor: 'text-violet-600',
+    trendUp: 'text-emerald-600',
+    trendDown: 'text-red-500',
   },
 };
 
@@ -43,44 +52,43 @@ export function MetricCard({
   icon,
   trend,
   variant = 'default',
-  className,
 }: MetricCardProps) {
   const styles = variantStyles[variant];
+  const isPositive = trend && trend.value >= 0;
 
   return (
-    <div className={cn('metric-card animate-fade-in group hover:shadow-lg transition-all duration-300', className)}>
-      <div className="flex items-start justify-between gap-4">
-        <div className="space-y-3 flex-1">
-          <p className="text-sm font-medium text-muted-foreground">{title}</p>
-          <p className="text-4xl font-bold text-foreground tracking-tight">{value}</p>
+    <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
+      <div className="flex items-start justify-between">
+        <div className="flex-1">
+          <p className="text-sm text-gray-500 mb-1">{title}</p>
+          <p className="text-3xl font-bold text-gray-900">{value}</p>
           {trend && (
-            <div className="flex items-center gap-2 pt-1">
-              {trend.value > 0 ? (
-                <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-success/10">
-                  <TrendingUp className="w-3.5 h-3.5 text-success" />
-                  <span className="text-xs font-semibold text-success">+{trend.value}%</span>
-                </div>
-              ) : trend.value < 0 ? (
-                <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-destructive/10">
-                  <TrendingDown className="w-3.5 h-3.5 text-destructive" />
-                  <span className="text-xs font-semibold text-destructive">{trend.value}%</span>
-                </div>
+            <div className="flex items-center gap-1.5 mt-2">
+              {isPositive ? (
+                <TrendingUp className={cn('w-4 h-4', styles.trendUp)} />
               ) : (
-                <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-muted">
-                  <Minus className="w-3.5 h-3.5 text-muted-foreground" />
-                  <span className="text-xs font-semibold text-muted-foreground">0%</span>
-                </div>
+                <TrendingDown className={cn('w-4 h-4', styles.trendDown)} />
               )}
-              <span className="text-xs text-muted-foreground">{trend.label}</span>
+              <span
+                className={cn(
+                  'text-sm font-medium',
+                  isPositive ? styles.trendUp : styles.trendDown
+                )}
+              >
+                {isPositive ? '+' : ''}
+                {trend.value}%
+              </span>
+              <span className="text-sm text-gray-400">{trend.label}</span>
             </div>
           )}
         </div>
-        <div className={cn(
-          'p-4 rounded-2xl ring-1 transition-transform duration-300 group-hover:scale-105',
-          styles.icon,
-          styles.iconRing
-        )}>
-          {icon}
+        <div
+          className={cn(
+            'w-12 h-12 rounded-full flex items-center justify-center',
+            styles.iconBg
+          )}
+        >
+          <div className={cn(styles.iconColor)}>{icon}</div>
         </div>
       </div>
     </div>

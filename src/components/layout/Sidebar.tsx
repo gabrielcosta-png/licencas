@@ -1,192 +1,132 @@
-import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard,
   FileText,
   ClipboardList,
-  Shield,
-  BarChart3,
+  AlertCircle,
+  FileBarChart,
   FolderOpen,
-  Bell,
   Settings,
-  ChevronLeft,
-  ChevronRight,
-  Leaf,
-  LogOut,
-  User,
+  RefreshCw,
+  Users,
+  Cog,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
-const navItems = [
-  { path: '/', icon: LayoutDashboard, label: 'Dashboard' },
-  { path: '/licencas', icon: FileText, label: 'Licenças' },
-  { path: '/condicionantes', icon: ClipboardList, label: 'Condicionantes' },
-  { path: '/regularizacao', icon: Shield, label: 'Regularização' },
-  { path: '/relatorios', icon: BarChart3, label: 'Relatórios' },
-  { path: '/documentos', icon: FolderOpen, label: 'Documentos' },
-  { path: '/alertas', icon: Bell, label: 'Alertas' },
+const menuItems = [
+  { icon: LayoutDashboard, label: 'Dashboard', path: '/' },
+  { icon: FileText, label: 'Licenças', path: '/licencas' },
+  { icon: ClipboardList, label: 'Condicionantes', path: '/condicionantes' },
+  { icon: RefreshCw, label: 'Regularização', path: '/regularizacao' },
+  { icon: AlertCircle, label: 'Alertas', path: '/alertas' },
 ];
 
-const bottomItems = [
-  { path: '/configuracoes', icon: Settings, label: 'Configurações' },
+const secondaryItems = [
+  { icon: FileBarChart, label: 'Relatórios', path: '/relatorios' },
+  { icon: FolderOpen, label: 'Documentos', path: '/documentos' },
+];
+
+const configItems = [
+  { icon: Cog, label: 'Sistema', path: '/configuracoes' },
+  { icon: Users, label: 'Usuários', path: '/configuracoes/usuarios' },
 ];
 
 export function Sidebar() {
-  const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
 
+  const NavItem = ({
+    item,
+  }: {
+    item: { icon: typeof LayoutDashboard; label: string; path: string };
+  }) => {
+    const isActive =
+      location.pathname === item.path ||
+      (item.path !== '/' && location.pathname.startsWith(item.path));
+    const Icon = item.icon;
+
+    return (
+      <NavLink
+        to={item.path}
+        className={cn(
+          'flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200',
+          isActive
+            ? 'bg-emerald-50 text-emerald-600'
+            : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+        )}
+      >
+        <Icon className="w-5 h-5" />
+        <span>{item.label}</span>
+      </NavLink>
+    );
+  };
+
   return (
-    <aside
-      className={cn(
-        'fixed left-0 top-0 z-40 h-screen bg-sidebar border-r border-sidebar-border transition-all duration-300 flex flex-col',
-        collapsed ? 'w-20' : 'w-72'
-      )}
-    >
-      {/* Header */}
-      <div className="flex items-center justify-between h-20 px-5 border-b border-sidebar-border">
-        <Link to="/" className="flex items-center gap-3">
-          <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-sidebar-primary to-accent">
-            <Leaf className="w-5 h-5 text-white" />
+    <aside className="fixed left-0 top-0 z-40 h-screen w-64 bg-white border-r border-gray-200 flex flex-col">
+      {/* Logo */}
+      <div className="h-16 flex items-center px-5 border-b border-gray-100">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
+            <FileText className="w-5 h-5 text-white" />
           </div>
-          {!collapsed && (
-            <div className="flex flex-col">
-              <span className="text-base font-bold text-sidebar-foreground tracking-tight">
-                GLA
-              </span>
-              <span className="text-[11px] text-sidebar-foreground/50 font-medium">
-                Gestão Ambiental
-              </span>
-            </div>
-          )}
-        </Link>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="w-8 h-8 text-sidebar-foreground/50 hover:text-sidebar-foreground hover:bg-sidebar-accent rounded-lg"
-          onClick={() => setCollapsed(!collapsed)}
-        >
-          {collapsed ? (
-            <ChevronRight className="w-4 h-4" />
-          ) : (
-            <ChevronLeft className="w-4 h-4" />
-          )}
-        </Button>
+          <span className="text-lg font-bold text-gray-900">GLA</span>
+        </div>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto scrollbar-thin">
-        <p className={cn(
-          "text-[10px] font-semibold uppercase tracking-widest text-sidebar-foreground/40 mb-4 px-4",
-          collapsed && "sr-only"
-        )}>
-          Menu
-        </p>
-        {navItems.map((item) => {
-          const isActive = location.pathname === item.path;
-          const Icon = item.icon;
+      <nav className="flex-1 px-3 py-6 overflow-y-auto">
+        {/* Menu Principal */}
+        <div className="mb-6">
+          <span className="px-4 text-[11px] font-semibold uppercase tracking-wider text-gray-400">
+            Menu Principal
+          </span>
+          <div className="mt-3 space-y-1">
+            {menuItems.map((item) => (
+              <NavItem key={item.path} item={item} />
+            ))}
+          </div>
+        </div>
 
-          const linkContent = (
-            <Link
-              to={item.path}
-              className={cn(
-                'nav-link group',
-                isActive ? 'nav-link-active' : 'nav-link-inactive'
-              )}
-            >
-              <Icon className={cn(
-                "w-5 h-5 flex-shrink-0 transition-transform duration-200",
-                !isActive && "group-hover:scale-110"
-              )} />
-              {!collapsed && <span>{item.label}</span>}
-            </Link>
-          );
+        {/* Documentação */}
+        <div className="mb-6">
+          <span className="px-4 text-[11px] font-semibold uppercase tracking-wider text-gray-400">
+            Documentação
+          </span>
+          <div className="mt-3 space-y-1">
+            {secondaryItems.map((item) => (
+              <NavItem key={item.path} item={item} />
+            ))}
+          </div>
+        </div>
 
-          if (collapsed) {
-            return (
-              <Tooltip key={item.path} delayDuration={0}>
-                <TooltipTrigger asChild>{linkContent}</TooltipTrigger>
-                <TooltipContent side="right" className="font-medium">
-                  {item.label}
-                </TooltipContent>
-              </Tooltip>
-            );
-          }
-
-          return <div key={item.path}>{linkContent}</div>;
-        })}
+        {/* Configurações */}
+        <div>
+          <span className="px-4 text-[11px] font-semibold uppercase tracking-wider text-gray-400">
+            Configurações
+          </span>
+          <div className="mt-3 space-y-1">
+            {configItems.map((item) => (
+              <NavItem key={item.path} item={item} />
+            ))}
+          </div>
+        </div>
       </nav>
 
-      {/* Bottom Section */}
-      <div className="px-4 py-5 border-t border-sidebar-border space-y-1.5">
-        {bottomItems.map((item) => {
-          const isActive = location.pathname === item.path;
-          const Icon = item.icon;
-
-          const linkContent = (
-            <Link
-              to={item.path}
-              className={cn(
-                'nav-link group',
-                isActive ? 'nav-link-active' : 'nav-link-inactive'
-              )}
-            >
-              <Icon className={cn(
-                "w-5 h-5 flex-shrink-0 transition-transform duration-200",
-                !isActive && "group-hover:scale-110"
-              )} />
-              {!collapsed && <span>{item.label}</span>}
-            </Link>
-          );
-
-          if (collapsed) {
-            return (
-              <Tooltip key={item.path} delayDuration={0}>
-                <TooltipTrigger asChild>{linkContent}</TooltipTrigger>
-                <TooltipContent side="right" className="font-medium">
-                  {item.label}
-                </TooltipContent>
-              </Tooltip>
-            );
-          }
-
-          return <div key={item.path}>{linkContent}</div>;
-        })}
-
-        {/* User Section */}
-        <div
-          className={cn(
-            'flex items-center gap-3 p-3 mt-4 rounded-xl bg-sidebar-accent/60 backdrop-blur-sm',
-            collapsed && 'justify-center p-2'
-          )}
-        >
-          <div className="flex items-center justify-center w-9 h-9 rounded-full bg-gradient-to-br from-sidebar-primary to-accent text-white">
-            <User className="w-4 h-4" />
+      {/* User Profile */}
+      <div className="p-4 border-t border-gray-100">
+        <div className="flex items-center gap-3">
+          <Avatar className="h-10 w-10">
+            <AvatarImage src="/placeholder.svg" />
+            <AvatarFallback className="bg-emerald-100 text-emerald-700 font-semibold">
+              JA
+            </AvatarFallback>
+          </Avatar>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-semibold text-gray-900 truncate">
+              João Albuquerque
+            </p>
+            <p className="text-xs text-gray-500 truncate">Admin</p>
           </div>
-          {!collapsed && (
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-sidebar-foreground truncate">
-                Ana Silva
-              </p>
-              <p className="text-[11px] text-sidebar-foreground/50 truncate">
-                Analista Ambiental
-              </p>
-            </div>
-          )}
-          {!collapsed && (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="w-8 h-8 text-sidebar-foreground/50 hover:text-sidebar-foreground hover:bg-sidebar-border rounded-lg"
-            >
-              <LogOut className="w-4 h-4" />
-            </Button>
-          )}
         </div>
       </div>
     </aside>

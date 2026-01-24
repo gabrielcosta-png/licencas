@@ -3,8 +3,6 @@ import {
   CheckCircle2,
   AlertTriangle,
   Clock,
-  ClipboardList,
-  TrendingUp,
 } from 'lucide-react';
 import { MainLayout } from '@/components/layout/MainLayout';
 import { MetricCard } from '@/components/dashboard/MetricCard';
@@ -16,93 +14,53 @@ import { mockMetrics } from '@/data/mockData';
 
 export default function Dashboard() {
   return (
-    <MainLayout
-      title="Dashboard"
-      subtitle="Visão geral do sistema de gestão ambiental"
-    >
-      {/* Section Title */}
-      <div className="mb-6">
-        <h2 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground/70">
-          Licenças Ambientais
-        </h2>
-      </div>
-      
-      {/* Metrics Grid - Licenses */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 mb-10">
+    <MainLayout title="Dashboard Overview">
+      {/* Metrics Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
         <MetricCard
           title="Total de Licenças"
           value={mockMetrics.totalLicenses}
           icon={<FileText className="w-6 h-6" />}
-          variant="default"
+          trend={{ value: 12.5, label: 'vs último mês' }}
+          variant="info"
         />
         <MetricCard
           title="Licenças Vigentes"
           value={mockMetrics.validLicenses}
           icon={<CheckCircle2 className="w-6 h-6" />}
-          trend={{ value: 0, label: 'vs mês anterior' }}
+          trend={{ value: 8.5, label: 'vs último mês' }}
           variant="success"
         />
         <MetricCard
           title="Vencendo em 30 dias"
           value={mockMetrics.expiringIn30Days}
           icon={<Clock className="w-6 h-6" />}
+          trend={{ value: -5, label: 'vs último mês' }}
           variant="warning"
         />
         <MetricCard
           title="Licenças Vencidas"
           value={mockMetrics.expiredLicenses}
           icon={<AlertTriangle className="w-6 h-6" />}
-          variant="danger"
-        />
-      </div>
-
-      {/* Section Title */}
-      <div className="mb-6">
-        <h2 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground/70">
-          Condicionantes
-        </h2>
-      </div>
-
-      {/* Conditionants Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 mb-10">
-        <MetricCard
-          title="Total Condicionantes"
-          value={mockMetrics.totalConditionants}
-          icon={<ClipboardList className="w-6 h-6" />}
-          variant="default"
-        />
-        <MetricCard
-          title="Cumpridas"
-          value={mockMetrics.completedConditionants}
-          icon={<CheckCircle2 className="w-6 h-6" />}
-          trend={{ value: 5, label: 'este mês' }}
-          variant="success"
-        />
-        <MetricCard
-          title="Em Andamento"
-          value={mockMetrics.inProgressConditionants}
-          icon={<TrendingUp className="w-6 h-6" />}
-          variant="default"
-        />
-        <MetricCard
-          title="Em Atraso"
-          value={mockMetrics.delayedConditionants}
-          icon={<AlertTriangle className="w-6 h-6" />}
-          trend={{ value: -2, label: 'vs mês anterior' }}
+          trend={{ value: 12, label: 'novos este mês' }}
           variant="danger"
         />
       </div>
 
       {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <LicenseStatusChart />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <div className="lg:col-span-2">
+          <LicenseStatusChart />
+        </div>
         <ConditionantProgressChart />
       </div>
 
-      {/* Alerts and Deadlines */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {/* Activities and Table */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <RecentAlerts />
-        <UpcomingDeadlines />
+        <div className="lg:col-span-2">
+          <UpcomingDeadlines />
+        </div>
       </div>
     </MainLayout>
   );

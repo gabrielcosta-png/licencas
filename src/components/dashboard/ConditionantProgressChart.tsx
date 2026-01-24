@@ -1,84 +1,62 @@
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  Cell,
-} from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 
 const data = [
-  {
-    name: 'Cumpridas',
-    value: 77,
-    color: 'hsl(158, 50%, 42%)',
-  },
-  {
-    name: 'Em Andamento',
-    value: 38,
-    color: 'hsl(200, 80%, 50%)',
-  },
-  {
-    name: 'Não Iniciadas',
-    value: 4,
-    color: 'hsl(220, 10%, 75%)',
-  },
-  {
-    name: 'Em Atraso',
-    value: 12,
-    color: 'hsl(0, 65%, 55%)',
-  },
+  { name: 'Cumpridas', value: 40, color: '#10b981' },
+  { name: 'Em Andamento', value: 30, color: '#f59e0b' },
+  { name: 'Atrasadas', value: 20, color: '#ef4444' },
+  { name: 'Não Iniciadas', value: 10, color: '#6366f1' },
 ];
-
-const total = data.reduce((acc, curr) => acc + curr.value, 0);
 
 export function ConditionantProgressChart() {
   return (
-    <div className="card-elevated p-6 h-[360px]">
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="section-title">Condicionantes por Status</h3>
-        <span className="text-sm text-muted-foreground">{total} total</span>
+    <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm h-full">
+      <h3 className="text-base font-semibold text-gray-900 mb-6">
+        Categorias
+      </h3>
+      <div className="flex items-center gap-6">
+        <div className="h-48 w-48">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={data}
+                cx="50%"
+                cy="50%"
+                innerRadius={50}
+                outerRadius={80}
+                paddingAngle={3}
+                dataKey="value"
+                stroke="none"
+              >
+                {data.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Pie>
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: 'white',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '8px',
+                  boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
+                }}
+                formatter={(value: number) => [`${value}%`, '']}
+              />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+        <div className="flex flex-col gap-3">
+          {data.map((item) => (
+            <div key={item.name} className="flex items-center gap-2">
+              <span
+                className="w-3 h-3 rounded-full"
+                style={{ backgroundColor: item.color }}
+              />
+              <span className="text-sm text-gray-600">
+                {item.name} ({item.value}%)
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
-      
-      <ResponsiveContainer width="100%" height="calc(100% - 60px)">
-        <BarChart 
-          data={data} 
-          layout="vertical" 
-          barSize={28}
-          margin={{ left: 10, right: 20 }}
-        >
-          <XAxis 
-            type="number" 
-            tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))' }}
-            axisLine={false}
-            tickLine={false}
-          />
-          <YAxis
-            type="category"
-            dataKey="name"
-            width={100}
-            tick={{ fontSize: 13, fill: 'hsl(var(--foreground))', fontWeight: 500 }}
-            axisLine={false}
-            tickLine={false}
-          />
-          <Tooltip
-            contentStyle={{
-              backgroundColor: 'hsl(var(--card))',
-              border: '1px solid hsl(var(--border))',
-              borderRadius: '12px',
-              padding: '8px 12px',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-            }}
-            cursor={{ fill: 'hsl(var(--muted) / 0.5)' }}
-          />
-          <Bar dataKey="value" radius={[0, 8, 8, 0]}>
-            {data.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={entry.color} />
-            ))}
-          </Bar>
-        </BarChart>
-      </ResponsiveContainer>
     </div>
   );
 }
