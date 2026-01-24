@@ -1,78 +1,110 @@
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+} from 'recharts';
+import { useState } from 'react';
+import { cn } from '@/lib/utils';
 
 const data = [
-  { name: 'Vigentes', value: 3, color: 'hsl(158, 50%, 42%)' },
-  { name: 'Em Renovação', value: 1, color: 'hsl(40, 95%, 55%)' },
-  { name: 'Vencidas', value: 1, color: 'hsl(0, 65%, 55%)' },
+  { month: 'Jan', vigentes: 32, vencidas: 4 },
+  { month: 'Fev', vigentes: 34, vencidas: 3 },
+  { month: 'Mar', vigentes: 38, vencidas: 2 },
+  { month: 'Abr', vigentes: 36, vencidas: 3 },
+  { month: 'Mai', vigentes: 40, vencidas: 2 },
+  { month: 'Jun', vigentes: 42, vencidas: 1 },
+  { month: 'Jul', vigentes: 45, vencidas: 2 },
 ];
 
-const total = data.reduce((acc, curr) => acc + curr.value, 0);
+type Period = 'Mês' | 'Semana' | 'Dia';
 
 export function LicenseStatusChart() {
+  const [period, setPeriod] = useState<Period>('Mês');
+
   return (
-    <div className="card-elevated p-6 h-[360px]">
+    <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm h-full">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="section-title">Status das Licenças</h3>
-      </div>
-      
-      <div className="flex items-center h-[calc(100%-60px)]">
-        <div className="w-1/2 h-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie
-                data={data}
-                cx="50%"
-                cy="50%"
-                innerRadius={55}
-                outerRadius={85}
-                paddingAngle={3}
-                dataKey="value"
-                strokeWidth={0}
-              >
-                {data.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} />
-                ))}
-              </Pie>
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: 'hsl(var(--card))',
-                  border: '1px solid hsl(var(--border))',
-                  borderRadius: '12px',
-                  padding: '8px 12px',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                }}
-                itemStyle={{ color: 'hsl(var(--foreground))' }}
-              />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
-        
-        <div className="w-1/2 space-y-4 pl-4">
-          {data.map((item) => (
-            <div key={item.name} className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div 
-                  className="w-3 h-3 rounded-full" 
-                  style={{ backgroundColor: item.color }}
-                />
-                <span className="text-sm text-muted-foreground">{item.name}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-lg font-bold text-foreground">{item.value}</span>
-                <span className="text-xs text-muted-foreground">
-                  ({Math.round((item.value / total) * 100)}%)
-                </span>
-              </div>
-            </div>
+        <h3 className="text-base font-semibold text-gray-900">
+          Controle de Licenças
+        </h3>
+        <div className="flex gap-1 bg-gray-100 rounded-lg p-1">
+          {(['Mês', 'Semana', 'Dia'] as Period[]).map((p) => (
+            <button
+              key={p}
+              onClick={() => setPeriod(p)}
+              className={cn(
+                'px-3 py-1.5 text-xs font-medium rounded-md transition-all',
+                period === p
+                  ? 'bg-white text-gray-900 shadow-sm'
+                  : 'text-gray-500 hover:text-gray-700'
+              )}
+            >
+              {p}
+            </button>
           ))}
-          
-          <div className="pt-4 mt-4 border-t border-border">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-muted-foreground">Total</span>
-              <span className="text-xl font-bold text-foreground">{total}</span>
-            </div>
-          </div>
         </div>
+      </div>
+      <div className="h-64">
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart
+            data={data}
+            margin={{ top: 5, right: 20, left: 0, bottom: 5 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+            <XAxis
+              dataKey="month"
+              axisLine={false}
+              tickLine={false}
+              tick={{ fill: '#9ca3af', fontSize: 12 }}
+            />
+            <YAxis
+              axisLine={false}
+              tickLine={false}
+              tick={{ fill: '#9ca3af', fontSize: 12 }}
+            />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: 'white',
+                border: '1px solid #e5e7eb',
+                borderRadius: '8px',
+                boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
+              }}
+            />
+            <Legend
+              verticalAlign="top"
+              align="center"
+              height={36}
+              iconType="circle"
+              iconSize={8}
+              formatter={(value) => (
+                <span className="text-xs text-gray-600">{value}</span>
+              )}
+            />
+            <Line
+              type="monotone"
+              dataKey="vigentes"
+              name="Licenças Vigentes"
+              stroke="#10b981"
+              strokeWidth={2}
+              dot={{ fill: '#10b981', strokeWidth: 2, r: 4 }}
+              activeDot={{ r: 6 }}
+            />
+            <Line
+              type="monotone"
+              dataKey="vencidas"
+              name="Licenças Vencidas"
+              stroke="#f59e0b"
+              strokeWidth={2}
+              dot={{ fill: '#f59e0b', strokeWidth: 2, r: 4 }}
+              activeDot={{ r: 6 }}
+            />
+          </LineChart>
+        </ResponsiveContainer>
       </div>
     </div>
   );

@@ -1,68 +1,69 @@
-import { Link } from 'react-router-dom';
-import { AlertTriangle, Clock, FileWarning, ArrowRight } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { mockAlerts } from '@/data/mockData';
-import { Button } from '@/components/ui/button';
+import { FileText, AlertTriangle, CheckCircle, Clock } from 'lucide-react';
 
-const severityConfig = {
-  low: {
-    icon: Clock,
-    className: 'bg-info/10 text-info',
+const activities = [
+  {
+    id: 1,
+    title: 'Nova licença cadastrada',
+    subtitle: 'LP-0892/2024 IBAMA',
+    time: '2 horas atrás',
+    icon: FileText,
+    iconBg: 'bg-blue-100',
+    iconColor: 'text-blue-600',
   },
-  medium: {
-    icon: Clock,
-    className: 'bg-warning/12 text-warning-foreground',
+  {
+    id: 2,
+    title: 'Condicionante cumprida',
+    subtitle: 'LO-1234/2023 - Cond. 5.1',
+    time: '4 horas atrás',
+    icon: CheckCircle,
+    iconBg: 'bg-emerald-100',
+    iconColor: 'text-emerald-600',
   },
-  high: {
+  {
+    id: 3,
+    title: 'Prazo crítico',
+    subtitle: 'LI-0567/2024 vence em 15 dias',
+    time: '6 horas atrás',
     icon: AlertTriangle,
-    className: 'bg-warning/12 text-warning-foreground',
+    iconBg: 'bg-amber-100',
+    iconColor: 'text-amber-600',
   },
-  critical: {
-    icon: FileWarning,
-    className: 'bg-destructive/10 text-destructive',
+  {
+    id: 4,
+    title: 'Renovação solicitada',
+    subtitle: 'LO-0789/2022 - Protocolo enviado',
+    time: '1 dia atrás',
+    icon: Clock,
+    iconBg: 'bg-violet-100',
+    iconColor: 'text-violet-600',
   },
-};
+];
 
 export function RecentAlerts() {
   return (
-    <div className="card-elevated p-6">
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="section-title">Alertas Recentes</h3>
-        <Link to="/alertas">
-          <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80 -mr-2 group">
-            Ver todos
-            <ArrowRight className="w-4 h-4 ml-1 transition-transform group-hover:translate-x-0.5" />
-          </Button>
-        </Link>
-      </div>
-
-      <div className="space-y-3">
-        {mockAlerts.slice(0, 4).map((alert) => {
-          const config = severityConfig[alert.severity];
-          const Icon = config.icon;
-
+    <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm h-full">
+      <h3 className="text-base font-semibold text-gray-900 mb-5">
+        Atividades recentes
+      </h3>
+      <div className="space-y-4">
+        {activities.map((activity) => {
+          const Icon = activity.icon;
           return (
-            <div
-              key={alert.id}
-              className={cn(
-                'flex items-start gap-4 p-4 rounded-xl border border-border/40 transition-all duration-200 hover:bg-muted/30 hover:border-border cursor-pointer',
-                !alert.isRead && 'bg-primary/3 border-primary/15'
-              )}
-            >
-              <div className={cn('p-2.5 rounded-xl', config.className)}>
-                <Icon className="w-4 h-4" />
+            <div key={activity.id} className="flex items-start gap-3">
+              <div
+                className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${activity.iconBg}`}
+              >
+                <Icon className={`w-5 h-5 ${activity.iconColor}`} />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-foreground line-clamp-1">
-                  {alert.title}
+                <p className="text-sm font-medium text-gray-900">
+                  {activity.title}
                 </p>
-                <p className="text-xs text-muted-foreground line-clamp-2 mt-1 leading-relaxed">
-                  {alert.description}
-                </p>
-                <p className="text-xs text-muted-foreground/70 mt-2">
-                  Prazo: {new Date(alert.dueDate).toLocaleDateString('pt-BR')}
-                </p>
+                <p className="text-xs text-gray-500">{activity.subtitle}</p>
               </div>
+              <span className="text-xs text-gray-400 whitespace-nowrap">
+                {activity.time}
+              </span>
             </div>
           );
         })}

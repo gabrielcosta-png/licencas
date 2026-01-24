@@ -8,13 +8,13 @@ interface MainLayoutProps {
   subtitle?: string;
 }
 
-export function MainLayout({ children, title, subtitle }: MainLayoutProps) {
+export function MainLayout({ children, title }: MainLayoutProps) {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gray-50">
       <Sidebar />
-      <div className="pl-72 transition-all duration-300">
-        <Header title={title} subtitle={subtitle} />
-        <main className="p-8 max-w-[1600px]">{children}</main>
+      <div className="pl-64">
+        <Header title={title} />
+        <main className="p-8">{children}</main>
       </div>
     </div>
   );
