@@ -10,11 +10,13 @@ interface MainLayoutProps {
 
 export function MainLayout({ children, title }: MainLayoutProps) {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       <Sidebar />
-      <div className="pl-64">
+      <div className="pl-72">
         <Header title={title} />
-        <main className="p-8">{children}</main>
+        <main className="p-6 bg-gradient-to-b from-sidebar-accent/30 to-background min-h-[calc(100vh-4rem)]">
+          {children}
+        </main>
       </div>
     </div>
   );
