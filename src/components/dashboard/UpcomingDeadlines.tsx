@@ -1,6 +1,6 @@
-import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { Calendar, ArrowRight } from 'lucide-react';
 
 const licenses = [
   {
@@ -8,131 +8,165 @@ const licenses = [
     name: 'Licença Operação Terminal',
     code: 'LO-1234',
     category: 'Operação',
-    progress: 85,
-    total: '85 dias',
+    days: 85,
     status: 'Estável',
-    statusColor: 'bg-emerald-100 text-emerald-700',
+    statusVariant: 'success' as const,
   },
   {
     id: 2,
     name: 'Licença Instalação Duto',
     code: 'LI-0567',
     category: 'Instalação',
-    progress: 15,
-    total: '15 dias',
+    days: 15,
     status: 'Crítico',
-    statusColor: 'bg-red-100 text-red-700',
+    statusVariant: 'danger' as const,
   },
   {
     id: 3,
     name: 'Licença Prévia Refinaria',
     code: 'LP-0892',
     category: 'Prévia',
-    progress: 45,
-    total: '45 dias',
+    days: 45,
     status: 'Atenção',
-    statusColor: 'bg-amber-100 text-amber-700',
+    statusVariant: 'warning' as const,
   },
   {
     id: 4,
     name: 'Renovação LO Plataforma',
     code: 'RLO-0321',
     category: 'Renovação',
-    progress: 70,
-    total: '70 dias',
+    days: 70,
     status: 'Estável',
-    statusColor: 'bg-emerald-100 text-emerald-700',
+    statusVariant: 'success' as const,
   },
 ];
 
+const statusStyles = {
+  success: {
+    bg: 'bg-emerald-500/20',
+    text: 'text-emerald-400',
+    border: 'border-emerald-500/30',
+    progressBg: 'bg-emerald-500',
+  },
+  warning: {
+    bg: 'bg-amber-500/20',
+    text: 'text-amber-400',
+    border: 'border-amber-500/30',
+    progressBg: 'bg-amber-500',
+  },
+  danger: {
+    bg: 'bg-red-500/20',
+    text: 'text-red-400',
+    border: 'border-red-500/30',
+    progressBg: 'bg-red-500',
+  },
+};
+
 export function UpcomingDeadlines() {
   return (
-    <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm h-full">
+    <div className="bg-card rounded-xl p-6 border border-border/50 h-full">
       <div className="flex items-center justify-between mb-5">
-        <h3 className="text-base font-semibold text-gray-900">
-          Status das Licenças
-        </h3>
-        <button className="text-sm text-emerald-600 hover:text-emerald-700 font-medium">
+        <div>
+          <h3 className="text-base font-semibold text-foreground">
+            Status das Licenças
+          </h3>
+          <p className="text-sm text-muted-foreground mt-0.5">
+            Próximos vencimentos
+          </p>
+        </div>
+        <button className="flex items-center gap-1 text-xs text-primary hover:text-primary/80 font-medium transition-colors group">
           Ver todos
+          <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
         </button>
       </div>
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead>
-            <tr className="text-left border-b border-gray-100">
-              <th className="pb-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Licença
-              </th>
-              <th className="pb-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Código
-              </th>
-              <th className="pb-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Categoria
-              </th>
-              <th className="pb-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Dias Restantes
-              </th>
-              <th className="pb-3 text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Status
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-50">
-            {licenses.map((license) => (
-              <tr key={license.id} className="group">
-                <td className="py-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center">
-                      <span className="text-xs font-medium text-gray-600">
-                        {license.code.split('-')[0]}
+
+      <div className="space-y-3">
+        {licenses.map((license) => {
+          const styles = statusStyles[license.statusVariant];
+          const progress = Math.min(100, (license.days / 100) * 100);
+
+          return (
+            <div
+              key={license.id}
+              className="group p-4 rounded-lg bg-muted/30 hover:bg-muted/50 transition-all duration-300 cursor-pointer border border-transparent hover:border-border/50"
+            >
+              <div className="flex items-start justify-between gap-4">
+                {/* Left Section */}
+                <div className="flex items-start gap-3 flex-1 min-w-0">
+                  <div
+                    className={cn(
+                      'w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0',
+                      styles.bg
+                    )}
+                  >
+                    <span className={cn('text-xs font-bold', styles.text)}>
+                      {license.code.split('-')[0]}
+                    </span>
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-foreground truncate group-hover:text-primary transition-colors">
+                      {license.name}
+                    </p>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-xs text-muted-foreground">
+                        {license.code}
+                      </span>
+                      <span className="text-muted-foreground/50">•</span>
+                      <span className="text-xs text-muted-foreground">
+                        {license.category}
                       </span>
                     </div>
-                    <span className="text-sm font-medium text-gray-900">
-                      {license.name}
-                    </span>
                   </div>
-                </td>
-                <td className="py-4">
-                  <span className="text-sm text-gray-500">{license.code}</span>
-                </td>
-                <td className="py-4">
-                  <span className="text-sm text-gray-500">
-                    {license.category}
-                  </span>
-                </td>
-                <td className="py-4">
-                  <div className="flex items-center gap-3 min-w-32">
-                    <span className="text-sm text-gray-900 w-16">
-                      {license.total}
-                    </span>
-                    <Progress
-                      value={license.progress}
+                </div>
+
+                {/* Right Section */}
+                <div className="flex items-center gap-3 flex-shrink-0">
+                  {/* Days Badge */}
+                  <div className="flex items-center gap-1.5">
+                    <Calendar className="w-3.5 h-3.5 text-muted-foreground" />
+                    <span
                       className={cn(
-                        'h-1.5 flex-1',
-                        license.progress < 30
-                          ? '[&>div]:bg-red-500'
-                          : license.progress < 50
-                          ? '[&>div]:bg-amber-500'
-                          : '[&>div]:bg-emerald-500'
+                        'text-sm font-medium',
+                        license.days <= 30 ? 'text-red-400' : 'text-foreground'
                       )}
-                    />
+                    >
+                      {license.days} dias
+                    </span>
                   </div>
-                </td>
-                <td className="py-4">
+
+                  {/* Status Badge */}
                   <Badge
                     variant="secondary"
                     className={cn(
-                      'font-medium border-0',
-                      license.statusColor
+                      'font-medium border',
+                      styles.bg,
+                      styles.text,
+                      styles.border
                     )}
                   >
                     {license.status}
                   </Badge>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                </div>
+              </div>
+
+              {/* Progress Bar */}
+              <div className="mt-3 flex items-center gap-3">
+                <div className="flex-1 h-1.5 bg-muted rounded-full overflow-hidden">
+                  <div
+                    className={cn(
+                      'h-full rounded-full transition-all duration-500',
+                      styles.progressBg
+                    )}
+                    style={{ width: `${progress}%` }}
+                  />
+                </div>
+                <span className="text-xs text-muted-foreground w-8 text-right">
+                  {Math.round(progress)}%
+                </span>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
