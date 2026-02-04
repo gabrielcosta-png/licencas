@@ -1,6 +1,5 @@
 import { ReactNode } from 'react';
-import { Sidebar } from './Sidebar';
-import { Header } from './Header';
+import { TopNavigation } from './TopNavigation';
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -8,13 +7,21 @@ interface MainLayoutProps {
   subtitle?: string;
 }
 
-export function MainLayout({ children, title }: MainLayoutProps) {
+export function MainLayout({ children, title, subtitle }: MainLayoutProps) {
   return (
     <div className="min-h-screen bg-background">
-      <Sidebar />
-      <div className="pl-72">
-        <Header title={title} />
-        <main className="p-6 bg-gradient-to-b from-sidebar-accent/30 to-background min-h-[calc(100vh-4rem)]">
+      <TopNavigation />
+      <div className="pt-16">
+        {/* Page Header */}
+        <div className="px-6 py-6 border-b border-border/50 bg-gradient-to-r from-primary/5 via-transparent to-transparent">
+          <h1 className="text-2xl font-bold text-foreground">{title}</h1>
+          {subtitle && (
+            <p className="text-sm text-muted-foreground mt-1">{subtitle}</p>
+          )}
+        </div>
+        
+        {/* Main Content */}
+        <main className="p-6 bg-gradient-to-b from-muted/20 to-background min-h-[calc(100vh-8rem)]">
           {children}
         </main>
       </div>
