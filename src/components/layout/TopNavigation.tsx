@@ -33,7 +33,7 @@ export function TopNavigation() {
   const location = useLocation();
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-black border-b border-border/50">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background border-b border-border">
       {/* Main Navigation Bar */}
       <div className="h-14 px-6 flex items-center gap-6">
         {/* Logo */}
