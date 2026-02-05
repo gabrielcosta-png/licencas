@@ -38,10 +38,12 @@ export function TopNavigation() {
       <div className="h-14 px-6 flex items-center gap-6">
         {/* Logo */}
         <NavLink to="/" className="flex items-center gap-2 flex-shrink-0">
+  
           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center">
             <FileText className="w-4 h-4 text-primary-foreground" />
           </div>
-          <span className="text-lg font-bold text-foreground tracking-tight">GLA</span>
+          <img src="https://progel.com.br/wp-content/uploads/2023/05/cropped-PROGEL-ICONE-300x300-1.jpg" alt="Logo" className="w-8 h-8" />
+          <span className="text-lg font-bold text-foreground tracking-tight"></span>
         </NavLink>
 
         {/* Navigation Links */}
@@ -166,8 +168,8 @@ export function TopNavigation() {
               className="w-56"
             >
               <div className="px-3 py-2 border-b">
-                <p className="text-sm font-medium">João Silva</p>
-                <p className="text-xs text-muted-foreground">joao@empresa.com</p>
+                <p className="text-sm font-medium">Gabriel Costa</p>
+                <p className="text-xs text-muted-foreground">gabriel.ferreira@alunos.ufersa.edu.br</p>
               </div>
               <DropdownMenuItem className="cursor-pointer">
                 <User className="w-4 h-4 mr-2" />

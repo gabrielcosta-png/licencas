@@ -130,7 +130,7 @@ export function Header({ title }: HeaderProps) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48 bg-sidebar-accent border-sidebar-border">
-            <DropdownMenuLabel className="text-foreground">João Albuquerque</DropdownMenuLabel>
+            <DropdownMenuLabel className="text-foreground">Gabriel Costa</DropdownMenuLabel>
             <DropdownMenuSeparator className="bg-sidebar-border" />
             <DropdownMenuItem className="text-muted-foreground focus:text-foreground focus:bg-sidebar-accent/50">
               Perfil
