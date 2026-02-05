@@ -3,10 +3,7 @@ import {
   LayoutDashboard,
   FileText,
   ClipboardList,
-  AlertCircle,
-  FileBarChart,
-  FolderOpen,
-  RefreshCw,
+  Globe,
   Bell,
   Search,
   User,
@@ -29,10 +26,7 @@ const mainMenuItems = [
   { icon: LayoutDashboard, label: 'Dashboard', path: '/' },
   { icon: FileText, label: 'Licenças', path: '/licencas' },
   { icon: ClipboardList, label: 'Condicionantes', path: '/condicionantes' },
-  { icon: RefreshCw, label: 'Regularização', path: '/regularizacao' },
-  { icon: AlertCircle, label: 'Alertas', path: '/alertas' },
-  { icon: FileBarChart, label: 'Relatórios', path: '/relatorios' },
-  { icon: FolderOpen, label: 'Documentos', path: '/documentos' },
+  { icon: Globe, label: 'WebGIS', path: '/webgis' },
 ];
 
 export function TopNavigation() {
@@ -41,20 +35,17 @@ export function TopNavigation() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-black border-b border-border/50">
       {/* Main Navigation Bar */}
-      <div className="h-16 px-4 flex items-center gap-4">
+      <div className="h-14 px-6 flex items-center gap-6">
         {/* Logo */}
-        <NavLink to="/" className="flex items-center gap-3 flex-shrink-0">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/20">
-            <FileText className="w-5 h-5 text-white" />
+        <NavLink to="/" className="flex items-center gap-2 flex-shrink-0">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center">
+            <FileText className="w-4 h-4 text-primary-foreground" />
           </div>
-          <span className="text-xl font-bold text-white tracking-tight">GLA</span>
+          <span className="text-lg font-bold text-foreground tracking-tight">GLA</span>
         </NavLink>
 
-        {/* Separator */}
-        <div className="w-px h-8 bg-border/50 mx-2" />
-
         {/* Navigation Links */}
-        <nav className="flex items-center gap-1 flex-1">
+        <nav className="flex items-center gap-1">
           {mainMenuItems.map((item) => {
             const isActive =
               location.pathname === item.path ||
@@ -66,38 +57,32 @@ export function TopNavigation() {
                 key={item.path}
                 to={item.path}
                 className={cn(
-                  'flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200',
+                  'flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors',
                   isActive
-                    ? 'bg-primary/20 text-primary'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+                    ? 'bg-primary text-primary-foreground'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-accent'
                 )}
               >
                 <Icon className="w-4 h-4" />
-                <span className="hidden lg:inline">{item.label}</span>
+                <span>{item.label}</span>
               </NavLink>
             );
           })}
         </nav>
 
+        {/* Spacer */}
+        <div className="flex-1" />
+
         {/* Right Section */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           {/* Search */}
-          <div className="relative hidden md:block">
+          <div className="relative hidden lg:block">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <Input
               placeholder="Buscar..."
-              className="w-48 lg:w-64 pl-9 h-9 bg-muted/50 border-border/50 rounded-full text-sm focus:bg-muted"
+              className="w-56 pl-9 h-9 bg-muted border-transparent text-sm"
             />
           </div>
-
-          {/* Quick Add */}
-          <Button
-            size="sm"
-            className="rounded-full gap-2 bg-primary hover:bg-primary/90"
-          >
-            <Plus className="w-4 h-4" />
-            <span className="hidden sm:inline">Nova Licença</span>
-          </Button>
 
           {/* Notifications */}
           <DropdownMenu>
@@ -105,30 +90,30 @@ export function TopNavigation() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="relative text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                className="relative text-muted-foreground hover:text-foreground"
               >
                 <Bell className="w-5 h-5" />
-                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 rounded-full text-[10px] font-bold text-white flex items-center justify-center">
+                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-destructive rounded-full text-[10px] font-bold text-destructive-foreground flex items-center justify-center">
                   3
                 </span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="end"
-              className="w-80 bg-card border-border"
+              className="w-80"
             >
-              <div className="px-3 py-2 border-b border-border">
-                <span className="text-sm font-semibold text-foreground">
+              <div className="px-3 py-2 border-b">
+                <span className="text-sm font-semibold">
                   Notificações
                 </span>
               </div>
               <div className="py-2">
                 <DropdownMenuItem className="flex items-start gap-3 p-3 cursor-pointer">
-                  <div className="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center flex-shrink-0">
-                    <AlertCircle className="w-4 h-4 text-amber-400" />
+                  <div className="w-8 h-8 rounded-lg bg-warning/20 flex items-center justify-center flex-shrink-0">
+                    <Bell className="w-4 h-4 text-warning" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-foreground">
+                    <p className="text-sm font-medium">
                       Licença próxima do vencimento
                     </p>
                     <p className="text-xs text-muted-foreground">
@@ -137,11 +122,11 @@ export function TopNavigation() {
                   </div>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="flex items-start gap-3 p-3 cursor-pointer">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
-                    <FileText className="w-4 h-4 text-emerald-400" />
+                  <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center flex-shrink-0">
+                    <FileText className="w-4 h-4 text-primary" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-foreground">
+                    <p className="text-sm font-medium">
                       Nova licença cadastrada
                     </p>
                     <p className="text-xs text-muted-foreground">
@@ -155,7 +140,7 @@ export function TopNavigation() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="w-full text-primary hover:text-primary/80"
+                  className="w-full text-primary"
                 >
                   Ver todas as notificações
                 </Button>
@@ -168,23 +153,21 @@ export function TopNavigation() {
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
-                className="flex items-center gap-2 px-2 hover:bg-muted/50"
+                className="flex items-center gap-2 px-2"
               >
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
-                  <User className="w-4 h-4 text-white" />
+                <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
+                  <User className="w-4 h-4 text-muted-foreground" />
                 </div>
                 <ChevronDown className="w-4 h-4 text-muted-foreground" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="end"
-              className="w-56 bg-card border-border"
+              className="w-56"
             >
-              <div className="px-3 py-2 border-b border-border">
-                <p className="text-sm font-medium text-foreground">João Silva</p>
-                <p className="text-xs text-muted-foreground">
-                  joao@empresa.com
-                </p>
+              <div className="px-3 py-2 border-b">
+                <p className="text-sm font-medium">João Silva</p>
+                <p className="text-xs text-muted-foreground">joao@empresa.com</p>
               </div>
               <DropdownMenuItem className="cursor-pointer">
                 <User className="w-4 h-4 mr-2" />
@@ -195,7 +178,7 @@ export function TopNavigation() {
                 Configurações
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="cursor-pointer text-red-400 focus:text-red-400">
+              <DropdownMenuItem className="cursor-pointer text-destructive focus:text-destructive">
                 Sair
               </DropdownMenuItem>
             </DropdownMenuContent>
