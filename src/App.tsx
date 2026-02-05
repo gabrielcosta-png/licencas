@@ -12,6 +12,7 @@ import Documents from "./pages/Documents";
 import Alerts from "./pages/Alerts";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
+import WebGIS from "./pages/WebGIS";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,7 @@ const App = () => (
           <Route path="/documentos" element={<Documents />} />
           <Route path="/alertas" element={<Alerts />} />
           <Route path="/configuracoes" element={<Settings />} />
+          <Route path="/webgis" element={<WebGIS />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
