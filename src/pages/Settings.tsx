@@ -146,23 +146,23 @@ export default function Settings() {
             <div className="space-y-3">
               {[
                 {
-                  name: 'Ana Silva',
-                  email: 'ana.silva@empresa.com',
+                  name: 'Gabriel Costa',
+                  email: 'gabriel@progel.com',
                   role: 'Analista Ambiental',
                 },
                 {
-                  name: 'Carlos Santos',
-                  email: 'carlos.santos@empresa.com',
+                  name: 'Elayne',
+                  email: 'Elayne@progel.com',
                   role: 'Gestor',
                 },
                 {
-                  name: 'Maria Oliveira',
-                  email: 'maria.oliveira@empresa.com',
+                  name: 'Monique',
+                  email: 'Monique@progel.com',
                   role: 'Administrador',
                 },
                 {
-                  name: 'João Pereira',
-                  email: 'joao.pereira@empresa.com',
+                  name: 'William',
+                  email: 'William@progel.com',
                   role: 'Consulta',
                 },
               ].map((user, index) => (
